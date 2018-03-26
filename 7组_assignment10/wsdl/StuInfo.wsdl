@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--<wsdl:definitions -->
+<!--xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" -->
+<!--xmlns:tns="http://jw.nju.edu.cn/StuInfo/" -->
+<!--xmlns:fault="http://jw.nju.edu.cn/fault/wsdl"-->
+<!--xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" -->
+<!--xmlns:xsd="http://www.w3.org/2001/XMLSchema" -->
+<!--name="StuInfoService" targetNamespace="http://jw.nju.edu.cn/wsdl">-->
+
+<definitions
+        targetNamespace="http://jw.nju.edu.cn/wsdl"
+        xmlns:tns="http://jw.nju.edu.cn/wsdl"
+        xmlns:tns1="http://jw.nju.edu.cn/schema"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns="http://schemas.xmlsoap.org/wsdl/"
+        name="StudentService">
+
+    <documentation>学生个人信息管理服务</documentation>
+
+    <types>
+        <xsd:schema targetNamespace="http://jw.nju.edu.cn/schema" xmlns:tns="http://jw.nju.edu.cn/schema">
+            <xsd:include
+                    schemaLocation="../schema/Student.xsd"/>
+            <xsd:include
+                    schemaLocation="../schema/StuInfoFault.xsd"/>
+        </xsd:schema>
+    </types>
+
+    <message name="idNotFindFault">
+        <part name="fault" element="tns1:NotFoundFault" />
+    </message>
+    <message name="studentIdFault">
+        <part name="fault" element="tns1:NotFoundFault" />
+    </message>
+    <message name="courseIdFault">
+        <part name="fault" element="tns1:NotFoundFault"/>
+    </message>
+    <message name="basicMessageFault">
+        <part name="fault" element="tns1:InvalidParamFault"/>
+    </message>
+    <message name="serverFault">
+        <part name="fault" element="tns1:ServerFault"/>
+    </message>
+    <message name="get">
+        <part name="parameters" element="tns1:学号" />
+    </message>
+    <message name="getResponse">
+        <part name="parameters" element="tns1:学生信息" />
+    </message>
+    <message name="add">
+        <part name="parameters" element="tns1:学生信息" />
+    </message>
+    <message name="addResponse">
+        <part name="parameters" element="tns1:学生信息" />
+    </message>
+    <message name="modify">
+        <part name="parameters" element="tns1:学生信息"/>
+    </message>
+    <message name="modifyResponse">
+        <part name="parameters" element="tns1:学生信息"/>
+    </message>
+    <message name="delete">
+        <part name="parameters" element="tns1:学号" />
+    </message>
+    <message name="deleteResponse">
+        <part name="parameters" element="tns1:学生信息" />
+    </message>
+
+    <portType name="StuInfoInterface">
+        <operation name="getInfo">
+            <input message="tns:get" wsam:Action="student/getStudentRequest"/>
+            <output message="tns:getResponse" wsam:Action="student/getStudentResponse"/>
+            <fault name="IdNotFoundException" message="tns:idNotFindFault" wsam:Action="student/getStudent/Fault/IdNotFoundException"/>
+        </operation>
+
+        <operation name="addInfo">
+            <input message="tns:add" wsam:Action="student/addStudentRequest"/>
+            <output message="tns:addResponse" wsam:Action="student/addStudentResponse"/>
+            <fault name="StudentIdFault" message="tns:studentIdFault" wsam:Action="student/addStudent/Fault/StudentIdFaultException"/>
+            <fault name="CourseIdFault" message="tns:courseIdFault" wsam:Action="student/addStudent/Fault/CourseIdFaultException"/>
+            <fault name="BasicMessageFault" message="tns:basicMessageFault" wsam:Action="student/addStudent/Fault/BasicMessageFaultException"/>
+        </operation>
+
+        <operation name="delInfo">
+            <input message="tns:delete" wsam:Action="student/deleteStudentRequest"/>
+            <output message="tns:deleteResponse" wsam:Action="student/deleteStudentResponse"/>
+            <fault name="StudentIdFault" message="tns:studentIdFault" wsam:Action="student/deleteStudent/Fault/StudentIdFaultException"/>
+            <fault name="CourseIdFault" message="tns:courseIdFault" wsam:Action="student/deleteStudent/Fault/CourseIdFaultException"/>
+            <fault name="BasicMessageFault" message="tns:basicMessageFault" wsam:Action="student/deleteStudent/Fault/BasicMessageFaultException"/>
+        </operation>
+
+        <operation name="modifyInfo">
+            <input message="tns:modify" wsam:Action="student/modifyStudentRequest"/>
+            <output message="tns:modifyResponse" wsam:Action="student/modifyStudentResponse"/>
+            <fault name="StudentIdFault" message="tns:studentIdFault" wsam:Action="student/modifyStudent/Fault/StudentIdFaultException"/>
+            <fault name="CourseIdFault" message="tns:courseIdFault" wsam:Action="student/modifyStudent/Fault/CourseIdFaultException"/>
+            <fault name="BasicMessageFault" message="tns:basicMessageFault" wsam:Action="student/modifyStudent/Fault/BasicMessageFaultException"/>
+        </operation>
+    </portType>
+
+    <binding name="StuInfoBinding"
+            type="tns:StuInfoInterface">
+
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+
+        <operation name="getInfo">
+            <soap:operation soapAction="student/getStudent"/>
+            <input>
+                <soap:body use="literal" />
+            </input>
+            <output>
+                <soap:body use="literal" />
+            </output>
+
+            <fault name="IdNotFoundException">
+                <soap:fault name="IdNotFoundException" use="literal" />
+            </fault>
+        </operation>
+
+        <operation name="addInfo">
+            <soap:operation soapAction="student/addStudent"/>
+            <input>
+                <soap:body use="literal" />
+            </input>
+            <output>
+                <soap:body use="literal" />
+            </output>
+            <fault name="StudentIdFault">
+                <soap:fault name="StudentIdFault" use="literal" />
+            </fault>
+            <fault name="CourseIdFault">
+                <soap:fault name="CourseIdFault" use="literal" />
+            </fault>
+            <fault name="BasicMessageFault">
+                <soap:fault name="BasicMessageFault" use="literal" />
+            </fault>
+        </operation>
+
+        <operation name="modifyInfo">
+            <soap:operation soapAction="student/modifyStudent"/>
+            <input>
+                <soap:body use="literal" />
+            </input>
+            <output>
+                <soap:body use="literal" />
+            </output>
+            <fault name="StudentIdFault">
+                <soap:fault name="StudentIdFault" use="literal" />
+            </fault>
+            <fault name="CourseIdFault">
+                <soap:fault name="CourseIdFault" use="literal" />
+            </fault>
+            <fault name="BasicMessageFault">
+                <soap:fault name="BasicMessageFault" use="literal" />
+            </fault>
+        </operation>
+
+        <operation name="delInfo">
+            <soap:operation soapAction="student/deleteStudent"/>
+            <input>
+                <soap:body use="literal" />
+            </input>
+            <output>
+                <soap:body use="literal" />
+            </output>
+            <fault name="StudentIdFault">
+                <soap:fault name="StudentIdFault" use="literal" />
+            </fault>
+            <fault name="CourseIdFault">
+                <soap:fault name="CourseIdFault" use="literal" />
+            </fault>
+            <fault name="BasicMessageFault">
+                <soap:fault name="BasicMessageFault" use="literal" />
+            </fault>
+        </operation>
+    </binding>
+
+    <service name="stuInfoService">
+        <port name="stuInfoEndpoint"
+              binding="tns:StuInfoBinding">
+            <soap:address location="http://www.nju.edu.cn:8080/Student"/>
+        </port>
+    </service>
+
+</definitions>

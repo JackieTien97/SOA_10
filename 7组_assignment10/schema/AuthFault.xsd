@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://jw.nju.edu.cn/schema"
+        xmlns:nju="http://www.nju.edu.cn/schema"
+        targetNamespace="http://jw.nju.edu.cn/schema"
+        elementFormDefault="qualified">
+
+    <import namespace="http://www.nju.edu.cn/schema"
+            schemaLocation="PersonInfo.xsd" />
+
+    <include schemaLocation="Student.xsd"/>
+
+    <complexType name="AuthFaultType">
+        <sequence>
+            <element name="Reason" type="string"/>
+            <element name="Id" type="nju:账号类型"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="NotFoundType">
+        <sequence>
+            <element name="NotFoundReason" type="tns:NotFoundReasonType"/>
+            <element name="NotFoundId" type="string"/>
+        </sequence>
+    </complexType>
+
+    <simpleType name="NotFoundReasonType">
+        <restriction base="string">
+            <enumeration value="账号不存在"/>
+            <enumeration value="账号类型不匹配"/>
+        </restriction>
+    </simpleType>
+
+    <element name="AuthFault" type="tns:AuthFaultType"/>
+    <element name="NotFoundFault" type="tns:NotFoundType"/>
+
+</schema>

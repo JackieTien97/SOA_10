@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<definitions
+        targetNamespace="http://jw.nju.edu.cn/wsdl"
+        xmlns:tns="http://jw.nju.edu.cn/wsdl"
+        xmlns:tns1="http://jw.nju.edu.cn/schema"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns="http://schemas.xmlsoap.org/wsdl/"
+        name="ScoreService">
+
+    <documentation>学生账号认证服务</documentation>
+
+    <types>
+        <xsd:schema targetNamespace="http://jw.nju.edu.cn/schema" xmlns:tns="http://jw.nju.edu.cn/schema">
+            <xs:include
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                    schemaLocation="../schema/Auth.xsd" />
+            <xs:include
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                    schemaLocation="../schema/AuthFault.xsd" />
+        </xsd:schema>
+    </types>
+
+    <message name="idNotFoundFault">
+        <part name="fault" element="tns1:NotFoundFault"/>
+    </message>
+    <message name="pswErrorFault">
+        <part name="fault" element="tns1:AuthFault"/>
+    </message>
+    <message name="verify">
+        <part name="parameters" element="tns1:认证请求" />
+    </message>
+    <message name="verifyResponse">
+        <part name="parameters" element="tns1:验证信息"/>
+    </message>
+
+    <portType name="studentAuthInterface">
+
+        <operation name="verify">
+            <input message="tns:verify" wsam:Action="verify/verifyRequest"/>
+            <output message="tns:verifyResponse" wsam:Action="verify/verifyResponse"/>
+            <fault name="AuthFault" message="tns:pswErrorFault"/>
+            <fault name="NotFoundFault" message="tns:idNotFoundFault"/>
+        </operation>
+    </portType>
+
+    <binding name="studentAuthSOAPBinding"
+             type="tns:studentAuthInterface">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <operation name="verify">
+            <soap:operation soapAction="verify"/>
+            <input>
+                <soap:body use="literal" />
+            </input>
+            <output>
+                <soap:body use="literal" />
+            </output>
+
+            <fault name="NotFoundFault">
+                <soap:fault name="NotFoundFault" use="literal" />
+            </fault>
+            <fault name="AuthFault">
+                <soap:fault name="AuthFault" use="literal" />
+            </fault>
+        </operation>
+    </binding>
+
+    <service name="studentAuthService">
+        <port name="studentAuthEndPoin"
+              binding="tns:studentAuthSOAPBinding">
+            <soap:address location="http://www.nju.edu.cn:8080/Auth"/>
+        </port>
+
+    </service>
+
+</definitions>

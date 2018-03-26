@@ -7,5 +7,8 @@ public class StudentVO {
     public StudentBasicInformation studentBasicInformation;
     public StudentScore studentScore;
 
-
+    public StudentVO(StudentBasicInformation studentBasicInformation, StudentScore studentScore) {
+        this.studentBasicInformation = studentBasicInformation;
+        this.studentScore = studentScore;
+    }
 }
