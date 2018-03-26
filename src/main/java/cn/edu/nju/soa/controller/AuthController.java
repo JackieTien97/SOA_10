@@ -22,8 +22,7 @@ public class AuthController implements StudentAuthInterface{
         ids.add("151250162@smail.nju.edu.cn");
         ids.add("MF151250162@smail.nju.edu.cn");
         ids.add("151250162@nju.edu.cn");
-
-        //TODO 改xsd
+        
         VerifyType vt=new VerifyType();
 
         String account=parameters.getAccount();
