@@ -7,8 +7,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "\u6743\u9650\u7ea7\u522b")
 @XmlEnum
 public enum AuthLevel {
-    普通学生,
-    管理员;
+    普通学生,研究生,教师;
 
     public String value() {
         return name();

@@ -58,7 +58,7 @@ public class VerifyType {
      *     {@link AuthLevel }
      *
      */
-    public void set权限(AuthLevel value) {
+    public void setLevel(AuthLevel value) {
         this.level = value;
     }
 }
